@@ -1,32 +1,14 @@
-from src.modules.guest import guest_menu
-from src.modules.staff import staff_menu
+import os
+import sys
 
-# ====================
-# MAIN APPLICATION
-# ====================
-
-def main():
-    ans = "y"
-    while ans.lower() == "y":
-        print("\n" + "*"*45)
-        print("*     HOTEL MANAGEMENT SYSTEM MAIN MENU     *")
-        print("*"*45)
-        print("1. Guest records \n2. Staff records \n3. Exit")
-        try:
-            x = int(input("Enter choice: "))
-            if x == 1:
-                guest_menu()
-            elif x == 2:
-                staff_menu()
-            elif x == 3:
-                print("Exiting...")
-                break
-            else:
-                print("\t\tINVALID INPUT")
-        except ValueError:
-            print("Please enter a valid number (1, 2, or 3).")
-            
-        ans = input("Want to continue? (y/n): ")
-            
+# Launcher to maintain backwards compatibility with the Python CLI
 if __name__ == "__main__":
-    main()
+    cli_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "legacy_cli")
+    os.chdir(cli_dir)
+    sys.path.insert(0, cli_dir)
+    try:
+        from main import main
+        main()
+    except Exception as e:
+        print("Note: To run the Python CLI directly, make sure your MySQL database is active:")
+        print(f"Error: {e}")
